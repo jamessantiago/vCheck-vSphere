@@ -1,4 +1,4 @@
-# Start of Settings
+﻿# Start of Settings
 # Disabling displaying Google/KB links in order to have wider message column
 $simpleWarning = $true
 # End of Settings 
