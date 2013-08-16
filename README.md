@@ -15,6 +15,11 @@ Changes made by James
 =====================
 
 - Made modifications to enable support for multiple vi servers.
+
+You have to set the server like so: 192.168.0.5", "192.168.0.6
+
+Remove the outer quotes due to the settings formatting  so that the server variable is evaluated as an object array
+
 - Fixed some string issue
 
 What is checked for in the vSphere version ?
