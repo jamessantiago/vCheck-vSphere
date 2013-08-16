@@ -1,7 +1,7 @@
 # Start of Settings 
 # End of Settings 
 
-$alarms = $alarmMgr.GetAlarm($null)
+$alarms = $alarmMgrs |% {$_.GetAlarm($null)
 $valarms = $alarms | select value, @{N="name";E={(Get-View -Id $_).Info.Name}}
 $hostsalarms = @()
 foreach ($HostsView in $HostsViews){

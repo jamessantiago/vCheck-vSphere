@@ -24,8 +24,13 @@ if (!(get-pssnapin -name VMware.VimAutomation.Core -erroraction silentlycontinue
 Write-CustomOut "Connecting to VI Server"
 
 $VIConnection = Connect-VIServer $VIServer
-if (-not $VIConnection.IsConnected) {
+if ($VIConnection.count -eq 1 -and -not $VIConnection.IsConnected) {
 	Write-Host "Unable to connect to vCenter, please ensure you have altered the vCenter server address correctly "
+	Write-Host " to specify a username and password edit the connection string in the file $GlobalVariables"
+	break
+}
+elseif (!($VIConnection |? {$_.IsConnected})){
+	Write-Host "Unable to connect to one or more vCenter, please ensure you have altered the vCenter server address correctly "
 	Write-Host " to specify a username and password edit the connection string in the file $GlobalVariables"
 	break
 }
@@ -87,9 +92,9 @@ $FullVM = Get-View -ViewType VirtualMachine | Where {-not $_.Config.Template}
 Write-CustomOut "Collecting Template Objects"
 $VMTmpl = Get-Template
 Write-CustomOut "Collecting Detailed VI Objects"
-$ServiceInstance = get-view ServiceInstance
+$ServiceInstances = get-view ServiceInstance
 Write-CustomOut "Collecting Detailed Alarm Objects"
-$alarmMgr = get-view $ServiceInstance.Content.alarmManager
+$alarmMgrs = $ServiceInstances |% {get-view $_.Content.alarmManager}
 Write-CustomOut "Collecting Detailed VMHost Objects"
 $HostsViews = Get-View -ViewType hostsystem
 Write-CustomOut "Collecting Detailed Cluster Objects"
